@@ -6,7 +6,7 @@ from app.data.status import Status
 from app.data.configuration import Configuration
 
 
-CONNECTION_TIMEOUT = 0.1  # 100 ms
+CONNECTION_TIMEOUT = 0.5  # 100 ms
 
 SAX_STATUS_KEY = b"STATUS"
 SAX_CONFIGURATION_KEY = b"CONFIGURATION"

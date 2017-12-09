@@ -21,19 +21,33 @@ class Recruiter:
         return self._get_data(SAX_CONFIGURATION_KEY, Configuration.Parser())
 
     def _get_data(self, key, parser):
-        returned_status = []
+        returned_data = []
         for device in DeviceRegistry.get_devices():
             self.socket = socket.socket()
-            status = self._send_message(device, key, parser)
-            returned_status.append(status)
 
-    def _send_message(self, device: Device, msg: bytes, parser) -> Status:
-        self.socket.connect((device.ip, config.EMITTER_PORT))
+            try:
+                self._send_message(device, key)
+            except ConnectionError as e:
+                returned_data.append(parser({"error": e, "device": device}))
+            else:
+                data = self._receive_message()
+
+                returned_data.append(parser(data))
+
+            self.socket.close()
+        return returned_data
+
+    def _send_message(self, device: Device, msg: bytes):
+        try:
+            self.socket.connect((device.ip, config.EMITTER_PORT))
+        except OSError:
+            raise ConnectionError("Couldn't connect to device: {}".format(device))
+
         self.socket.send(msg)
-        data = self.socket.recv(int(1E6))
-        self.socket.close()
 
-        return parser((device, data))
+    def _receive_message(self):
+        return self.socket.recv(int(1E6))
+
 
 
 if __name__ == '__main__':

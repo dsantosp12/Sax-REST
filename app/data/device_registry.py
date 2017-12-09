@@ -20,6 +20,15 @@ class Device:
         self.ip = ip
         self.date = date
 
+    def json_able(self):
+        return {
+            "device_name": self.name,
+            "device_ip": self.ip
+        }
+
+    def __repr__(self):
+        return "Device: %s IP: %s" % (self.name, self.ip)
+
 
 class DeviceRegistry(Model):
     """

@@ -12,4 +12,5 @@ class Status:
 
     class Parser:
         def __call__(self, data):
-            pass
+            # TODO: Implement status parser (need data sample)
+            return str(data)

@@ -6,4 +6,5 @@ class Configuration:
 
     class Parser:
         def __call__(self, data):
-            pass
+            # TODO: Implement configuration parser (need data sample)
+            return str(data)

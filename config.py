@@ -14,4 +14,4 @@ DATABASE_URI = os.getenv("HOME") + "/.config/sax/sax-rest.db"
 
 
 # SAX Config
-EMITTER_PORT = 9430
+EMITTER_PORT = 4028

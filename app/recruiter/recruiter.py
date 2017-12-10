@@ -6,10 +6,16 @@ from app.data.status import Status
 from app.data.configuration import Configuration
 
 
-CONNECTION_TIMEOUT = 0.5  # 100 ms
+CONNECTION_TIMEOUT = 0.5  # 500 ms
 
-SAX_STATUS_KEY = b"STATUS"
-SAX_CONFIGURATION_KEY = b"CONFIGURATION"
+SAX_VERSION_KEY = b"version"
+SAX_STATUS_KEY = b"stats"
+SAX_SUMMARY_KEY = b"summary"
+SAX_CONFIGURATION_KEY = b"config"
+SAX_SHORT_KEY = b"lcd"
+SAX_PROBLEM_HISTORY_KEY = b"notify"
+SAX_POOL_LIST_KEY = b"pools"
+SAX_DEVICES_KEY = b"devs"
 
 
 class Recruiter:
@@ -40,8 +46,9 @@ class Recruiter:
         return returned_data
 
     def _send_message(self, device: Device, msg: bytes):
+        self.socket.settimeout(CONNECTION_TIMEOUT)
+
         try:
-            self.socket.settimeout(CONNECTION_TIMEOUT)
             self.socket.connect((device.ip, config.EMITTER_PORT))
         except OSError:
             raise ConnectionError("Couldn't connect to device: {}".format(device))
@@ -49,7 +56,7 @@ class Recruiter:
         self.socket.send(msg)
 
     def _receive_message(self):
-        return self.socket.recv(int(1E6))
+        return self.socket.recv(int(4096))
 
 
 if __name__ == '__main__':

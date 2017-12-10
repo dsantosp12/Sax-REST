@@ -2,7 +2,7 @@ import socket
 import json
 
 s = socket.socket()
-s.bind(("127.0.0.1", 9430))
+s.bind(("127.0.0.1", 4028))
 s.listen()
 
 while True:
@@ -10,7 +10,7 @@ while True:
 
     msg = conn.recv(1024)
 
-    print("Server got: {}".format(msg))
+    print("Server got: {}".format(msg.decode()))
 
     conn.send("{}".format(json.dumps(
         {

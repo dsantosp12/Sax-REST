@@ -1,21 +1,24 @@
 import socket
+import json
 
 import config
 from app.data.device_registry import DeviceRegistry, Device
-from app.data.status import Status
+from app.data.status import Status, StatusParser
+from app.data.short_summary import ShortSummary, ShortSummaryParser
+from app.data.notify import Notification, NotificationParser
 from app.data.configuration import Configuration
 
 
 CONNECTION_TIMEOUT = 0.5  # 500 ms
 
-SAX_VERSION_KEY = b"version"
-SAX_STATUS_KEY = b"stats"
-SAX_SUMMARY_KEY = b"summary"
-SAX_CONFIGURATION_KEY = b"config"
-SAX_SHORT_KEY = b"lcd"
-SAX_PROBLEM_HISTORY_KEY = b"notify"
-SAX_POOL_LIST_KEY = b"pools"
-SAX_DEVICES_KEY = b"devs"
+SAX_VERSION_KEY = "version"
+SAX_STATUS_KEY = "stats"
+SAX_SUMMARY_KEY = "summary"
+SAX_CONFIGURATION_KEY = "config"
+SAX_SHORT_KEY = "lcd"
+SAX_PROBLEM_HISTORY_KEY = "notify"
+SAX_POOL_LIST_KEY = "pools"
+SAX_DEVICES_KEY = "devs"
 
 
 class Recruiter:
@@ -23,14 +26,21 @@ class Recruiter:
         self.socket = None
 
     def get_status(self) -> [Status]:
-        return self._get_data(SAX_STATUS_KEY, Status.Parser())
+        return self._get_data(SAX_STATUS_KEY, StatusParser)
 
-    def get_configurations(self):
-        return self._get_data(SAX_CONFIGURATION_KEY, Configuration.Parser())
+    def get_configurations(self) -> [Configuration]:
+        return self._get_data(SAX_CONFIGURATION_KEY, Configuration.Parser)
+
+    def get_short_summary(self) -> [ShortSummary]:
+        return self._get_data(SAX_SHORT_KEY, ShortSummaryParser)
+
+    def get_notifications(self) -> [Notification]:
+        return self._get_data(SAX_PROBLEM_HISTORY_KEY, NotificationParser)
 
     def _get_data(self, key, parser):
         returned_data = []
         for device in DeviceRegistry.get_devices():
+            parser_instance = parser()
             self.socket = socket.socket()
 
             try:
@@ -40,7 +50,10 @@ class Recruiter:
             else:
                 data = self._receive_message()
 
-                returned_data.append(parser(data))
+                data_instance = parser_instance(data.decode())
+                data_instance.device = device
+
+                returned_data.append(data_instance)
 
             self.socket.close()
         return returned_data
@@ -53,7 +66,7 @@ class Recruiter:
         except OSError:
             raise ConnectionError("Couldn't connect to device: {}".format(device))
 
-        self.socket.send(msg)
+        self.socket.send(json.dumps({"command": msg}).encode())
 
     def _receive_message(self):
         return self.socket.recv(int(4096))

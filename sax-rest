@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+case "$1" in
+start)
+    /usr/local/sax/sax-rest/run &
+    echo $!>/var/run/sax-rest.pid
+    ;;
+stop)
+    kill `cat /var/run/sax-rest.pid`
+    rm /var/run/sax-rest.pid
+    ;;
+restart)
+    $0 stop
+    $0 start
+    ;;
+status)
+    if [ -e /var/run/sax-rest.pid ]; then
+        echo sax-rest is running, pid=`cat /var/run/sax-rest.pid`
+    else
+        echo sax-rest is not running
+        exit 1
+    fi
+    ;;
+*)
+    echo "Usage: $0 {start|stop|status|restart}"
+esac

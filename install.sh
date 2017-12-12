@@ -1,8 +1,27 @@
 #!/usr/bin/env bash
 
-apt install python3
-apt install python3-pip
-apt install sqlite3
+# Check if Python 3 is installed
+if command -v python3; then
+    echo "Python3 found"
+else
+    >&2 echo "Python3 is required. Install with sudo apt install python3"
+    exit 1
+fi
+
+# Check for pip3
+if command -v pip3; then
+    echo "Pip3 found"
+else
+    >&2 echo "Pip3 is required. Install with sudo apt install python3-pip"
+    exit 1
+fi
+
+# Check for Sqlite3
+if command -v sqlite3; then
+    echo "Sqlite3 found"
+else
+    >&2 echo "Sqlite3 is required. Install with sudo apt install sqlite3"
+fi
 
 mkdir -p "$HOME/.config/sax/"
 mkdir -p /usr/local/sax/sax-rest
@@ -13,18 +32,4 @@ cp -r ./* /usr/local/sax/sax-rest
 # Copy service file
 cp sax-rest /etc/init.d
 
-echo "
-[Unit]
-Description=Sax REST is the API for other services
-
-[Service]
-Type=simple
-WorkingDirectory=/usr/local/sax/sax-rest
-User=sax
-Group=sax
-ExecStart=/usr/local/sax/sax-rest/run
-ExecStop=kill \`cat /var/run/sax-rest.pid\`
-Restart=always
-SyslogIdentifier=sax
-
-" > /etc/systemd/user/sax-rest.service
+systemctl daemon-reload

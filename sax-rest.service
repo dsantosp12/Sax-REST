@@ -1,0 +1,14 @@
+Description=Sax REST is the API for other services
+
+[Service]
+Type=simple
+WorkingDirectory=/usr/local/sax/sax-rest
+User=sax
+Group=sax
+ExecStart=/usr/local/sax/sax-rest/run
+ExecStop=kill `cat /var/run/sax-rest.pid`
+Restart=always
+SyslogIdentifier=sax
+
+[Install]
+WantedBy=multi-user.target

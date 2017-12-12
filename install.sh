@@ -23,13 +23,30 @@ else
     >&2 echo "Sqlite3 is required. Install with sudo apt install sqlite3"
 fi
 
+# Check for virtualenv
+if command -v virtualenv; then
+    echo "Virtualenv found"
+else
+    >&2 echo "Virtualenv is required. Install with sudo apt install virtualenv"
+fi
+
+
+
 mkdir -p "$HOME/.config/sax/"
 mkdir -p /usr/local/sax/sax-rest
 
 # Setup project
 cp -r ./* /usr/local/sax/sax-rest
+virtualenv /usr/local/sax/venv/ --python=python3
+
+# Install dependencies to environment
+source /usr/local/sax/venv/bin/activate
+pip3 install -r /usr/local/sax/sax-rest/requirements.txt
+deactivate
 
 # Copy service file
 cp sax-rest /etc/init.d
 
 systemctl daemon-reload
+
+echo "Installed successfully"

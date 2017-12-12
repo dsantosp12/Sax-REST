@@ -11,6 +11,7 @@
 
 case "$1" in
 start)
+    source /usr/local/sax/venv/bin/activate &
     /usr/local/sax/sax-rest/run &
     echo $!>/var/run/sax-rest.pid
     ;;

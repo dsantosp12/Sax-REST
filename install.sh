@@ -10,8 +10,6 @@ mkdir -p /usr/local/sax/sax-rest
 # Setup project
 cp -r ./* /usr/local/sax/sax-rest
 
-python3 /usr/local/sax/sax-rest/setup.py install
-
 # Copy service file
 cp sax-rest /etc/init.d
 
@@ -29,4 +27,4 @@ ExecStop=kill \`cat /var/run/sax-rest.pid\`
 Restart=always
 SyslogIdentifier=sax
 
-" > /etc/init.d/sax-rest.service
+" > /etc/systemd/user/sax-rest.service

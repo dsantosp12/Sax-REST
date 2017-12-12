@@ -5,10 +5,10 @@ setup(
     version="0.1",
     author="Daniel Santos",
     author_email="dsantosp12@gmail.com",
-    packages=["app"]
-    include_packages_data=True,
+    packages=["app"],
+    include_package_data=True,
     url="http://github.com/dsantosp12/Sax-REST",
-    description=""
+    description="Sax services REST API",
     install_requires=[
         "flask",
         "peewee"

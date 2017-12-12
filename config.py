@@ -10,7 +10,7 @@ DEBUG = True
 
 SECRET_KEY = "c024be396990a710b1b20f31e77b527ef25df851f3e9afa4033c639188e399c7"
 
-DATABASE_URI = os.getenv("HOME") + "/.config/sax/sax-rest.db"
+DATABASE_URI = "/usr/local/sax/sax-rest.db"
 
 
 # SAX Config

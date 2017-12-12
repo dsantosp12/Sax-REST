@@ -30,9 +30,6 @@ else
     >&2 echo "Virtualenv is required. Install with sudo apt install virtualenv"
 fi
 
-
-
-mkdir -p "$HOME/.config/sax/"
 mkdir -p /usr/local/sax/sax-rest
 
 # Setup project

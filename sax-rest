@@ -1,4 +1,13 @@
-#!/usr/bin/env bash
+#!/bin/sh
+
+### BEGIN INIT INFO
+# Provides:
+# Required-Start:
+# Required-Stop:
+# Default-Start:
+# Default-Stop:
+# Short-Description:    Sax REST Service
+### END INIT INFO
 
 case "$1" in
 start)

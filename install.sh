@@ -46,6 +46,7 @@ deactivate
 
 # Copy service file
 cp sax-rest /etc/init.d
+chmod -x /etc/init.d/sax-rest
 
 systemctl daemon-reload
 

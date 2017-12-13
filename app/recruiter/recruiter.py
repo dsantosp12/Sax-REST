@@ -46,7 +46,7 @@ class Recruiter:
             try:
                 self._send_message(device, key)
             except ConnectionError as e:
-                returned_data.append(parser({"error": e, "device": device}))
+                returned_data.append(parser_instance({"error": e, "device": device}))
             else:
                 data = self._receive_message()
 
@@ -64,12 +64,12 @@ class Recruiter:
         try:
             self.socket.connect((device.ip, config.EMITTER_PORT))
         except OSError:
-            raise ConnectionError("Couldn't connect to device: {}".format(device))
+            raise ConnectionError("Could not connect to device: {}".format(device))
 
         self.socket.send(json.dumps({"command": msg}).encode())
 
     def _receive_message(self):
-        return self.socket.recv(int(4096))
+        return self.socket.recv(int(16384))
 
 
 if __name__ == '__main__':

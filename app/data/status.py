@@ -1,3 +1,4 @@
+from app.data.error import Error
 from app.recruiter.parser_base import ParserBase
 
 
@@ -40,7 +41,7 @@ class StatusParser(ParserBase):
 
     def _get_data_ready(self, msg: str):
         idx = msg.find("}{")
-
+        msg = msg[:-1]
         if idx == -1:
             raise RuntimeError("Couldn't find '}{' in the data.")
 
@@ -82,3 +83,11 @@ class StatusParser(ParserBase):
         self.status.chain_acs.append(stats["chain_acs3"])
 
         return self.status
+
+    def _handle_error(self, error):
+        return type("StatusError", (Error, ), {
+            "json_able": lambda cls: {
+                "error": str(error.get("error")),
+                "device": error.get("device").json_able()
+            }
+        })()

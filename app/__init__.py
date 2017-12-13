@@ -17,9 +17,8 @@ from app.data.device_registry import DeviceRegistry
 @app.before_request
 def check_authorization():
     request_token = request.headers.get("Authorization")
-    real_token = os.getenv("SAX_TOKEN_AUTH")
 
-    if not request_token == real_token:
+    if not request_token == config.AUTH_TOKEN:
         abort(401)
 
 

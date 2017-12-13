@@ -54,7 +54,9 @@ chmod +x /etc/init.d/sax-rest
 
 systemctl daemon-reload
 
-export SAX_TOKEN_AUTH=`pwgen 40 1`
+# Generate token and stores it
+SAX_TOKEN_AUTH=`pwgen 40 1`
+echo ${SAX_TOKEN_AUTH} > /usr/local/sax/sax-rest/.token
 
 echo ""
 echo "************************************************************************"

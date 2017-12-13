@@ -30,6 +30,13 @@ else
     >&2 echo "Virtualenv is required. Install with sudo apt install virtualenv"
 fi
 
+# Check for pwgen
+if command -v pwgen; then
+    echo "pwgen found"
+else
+    apt install pwgen
+fi
+
 mkdir -p /usr/local/sax/sax-rest
 
 # Setup project
@@ -47,4 +54,13 @@ chmod +x /etc/init.d/sax-rest
 
 systemctl daemon-reload
 
+export SAX_TOKEN_AUTH=`pwgen 40 1`
+
+echo ""
+echo "************************************"
+echo "Authorization Token: \e[31m$SAX_TOKEN_AUTH"
+echo "************************************"
+echo ""
+echo "Export this permanently"
+echo ""
 echo "Installed successfully"

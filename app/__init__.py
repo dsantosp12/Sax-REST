@@ -1,5 +1,4 @@
-import json
-import time
+import os
 
 from flask import Flask, request, abort, jsonify, Response
 from peewee import SqliteDatabase
@@ -13,6 +12,15 @@ db = SqliteDatabase(config.DATABASE_URI)
 
 from app.recruiter.recruiter import Recruiter
 from app.data.device_registry import DeviceRegistry
+
+
+@app.before_request
+def check_authorization():
+    request_token = request.headers.get("Authorization")
+    real_token = os.getenv("SAX_TOKEN_AUTH")
+
+    if not request_token == real_token:
+        abort(401)
 
 
 #

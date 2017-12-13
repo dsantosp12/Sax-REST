@@ -15,7 +15,7 @@ PORT = 9432
 
 DEBUG = True
 
-DATABASE_URI = os.getenv("HOME") + "/.config/sax/sax-rest.db"
+DATABASE_URI = "/usr/local/sax/sax-rest.db"
 
 # SAX Config
 EMITTER_PORT = 4028

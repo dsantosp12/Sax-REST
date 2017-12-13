@@ -15,11 +15,7 @@ PORT = 9432
 
 DEBUG = True
 
-AUTH_TOKEN = get_token()
-
-SECRET_KEY = AUTH_TOKEN
-
-DATABASE_URI = "/usr/local/sax/sax-rest.db"
+DATABASE_URI = os.getenv("HOME") + "/.config/sax/sax-rest.db"
 
 # SAX Config
 EMITTER_PORT = 4028

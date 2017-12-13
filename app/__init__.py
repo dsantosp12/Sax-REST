@@ -1,12 +1,16 @@
-import os
-
-from flask import Flask, request, abort, jsonify, Response
+from flask import Flask, request, abort, jsonify
 from peewee import SqliteDatabase
 
 import config
+from config import get_token
 
 app = Flask(__name__)
 app.config.from_object(config)
+
+
+token = get_token()
+app.config["AUTH_TOKEN"] = token
+app.config["SECRET_KEY"] = token
 
 db = SqliteDatabase(config.DATABASE_URI)
 
@@ -18,7 +22,7 @@ from app.data.device_registry import DeviceRegistry
 def check_authorization():
     request_token = request.headers.get("Authorization")
 
-    if not request_token == config.AUTH_TOKEN:
+    if not request_token == app.config.get("AUTH_TOKEN"):
         abort(401)
 
 

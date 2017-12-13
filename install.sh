@@ -57,10 +57,10 @@ systemctl daemon-reload
 export SAX_TOKEN_AUTH=`pwgen 40 1`
 
 echo ""
-echo "************************************"
-echo "Authorization Token: \e[31m$SAX_TOKEN_AUTH"
-echo "************************************"
+echo "************************************************************************"
+echo "Authorization Token: $SAX_TOKEN_AUTH"
+echo "************************************************************************"
 echo ""
-echo "Export this permanently"
+echo "Export this permanently in SAX_TOKEN_AUTH"
 echo ""
 echo "Installed successfully"

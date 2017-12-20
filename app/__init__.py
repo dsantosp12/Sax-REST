@@ -18,12 +18,12 @@ from app.recruiter.recruiter import Recruiter
 from app.data.device_registry import DeviceRegistry
 
 
-@app.before_request
-def check_authorization():
-    request_token = request.headers.get("Authorization")
-
-    if not request_token == app.config.get("AUTH_TOKEN"):
-        abort(401)
+# @app.before_request
+# def check_authorization():
+#     request_token = request.headers.get("Authorization")
+#
+#     if not request_token == app.config.get("AUTH_TOKEN"):
+#         abort(401)
 
 
 #

@@ -1,8 +1,6 @@
 import json
 from json import decoder
 
-from app.data.error import Error
-
 
 class ParserBase:
     def __init__(self):
@@ -16,12 +14,8 @@ class ParserBase:
 
         try:
             self.data = json.loads(self.data)
-        except decoder.JSONDecodeError:
-            return type("CorruptedDataError", (Error,), {
-                "json_able": lambda instance: {
-                    "error": "Data is corrupted"
-                }
-            })()
+        except decoder.JSONDecodeError as error:
+            return self._handle_error(error)
 
         return self._parse_json()
 

@@ -1,3 +1,5 @@
+from json.decoder import JSONDecodeError
+
 from app.data.error import Error
 from app.recruiter.parser_base import ParserBase
 
@@ -85,9 +87,14 @@ class StatusParser(ParserBase):
         return self.status
 
     def _handle_error(self, error):
+        error_msg = str(error.get("error")),
+
+        if isinstance(error, JSONDecodeError):
+            error_msg = "Data is corrupted"
+
         return type("StatusError", (Error, ), {
             "json_able": lambda cls: {
-                "error": str(error.get("error")),
+                "error": error_msg,
                 "device": error.get("device").json_able()
             }
         })()

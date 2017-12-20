@@ -21,6 +21,7 @@ if command -v sqlite3; then
     echo "Sqlite3 found"
 else
     >&2 echo "Sqlite3 is required. Install with sudo apt install sqlite3"
+    exit 1
 fi
 
 # Check for virtualenv
@@ -28,6 +29,7 @@ if command -v virtualenv; then
     echo "Virtualenv found"
 else
     >&2 echo "Virtualenv is required. Install with sudo apt install virtualenv"
+    exit 1
 fi
 
 # Check for pwgen

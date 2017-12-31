@@ -1,16 +1,14 @@
 from flask import Flask, request, abort, jsonify
+from flask_cors import CORS
 from peewee import SqliteDatabase
 
 import config
-from config import get_token
 
 app = Flask(__name__)
 app.config.from_object(config)
 
-
-token = get_token()
-app.config["AUTH_TOKEN"] = token
-app.config["SECRET_KEY"] = token
+# Allow cross origin request to the UI client only
+cors = CORS(app, resources={r"/*": {"origins": config.GUI_CLIENT_NAME}})
 
 db = SqliteDatabase(config.DATABASE_URI)
 
@@ -40,7 +38,8 @@ def get_devices_status():
 @app.route("/devices/status/short")
 def get_devices_status_short():
     recruiter = Recruiter()
-    devices_status = [status.json_able() for status in recruiter.get_short_summary()]
+    devices_status = [status.json_able()
+                      for status in recruiter.get_short_summary()]
 
     return jsonify(devices_status)
 

@@ -28,9 +28,15 @@ from app.data.device_registry import DeviceRegistry
 # Devices Status Endpoints
 #
 @app.route("/devices/status")
-def get_devices_status():
+@app.route("/devices/status/<int:device_id>")
+def get_devices_status(device_id=None):
     recruiter = Recruiter()
-    devices_status = [status.json_able() for status in recruiter.get_status()]
+
+    if device_id:
+        devices_status = recruiter.get_device_status(device_id).json_able()
+    else:
+        devices_status = [status.json_able()
+                          for status in recruiter.get_devices_status()]
 
     return jsonify(devices_status)
 

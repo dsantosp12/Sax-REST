@@ -11,9 +11,11 @@ class Device:
         Device is the DTO that for the representation of a device in the system.
 
         device_name:    Is the name of the device given by the user.
-        device_ip:      Is the local IP of the device where the system will connect to.
+        device_ip:      Is the local IP of the device where the system will
+                        connect to.
     """
-    def __init__(self, name: str, ip: str, date: datetime.datetime, device_id=None):
+    def __init__(self, name: str, ip: str, date: datetime.datetime,
+                 device_id=None):
         if not isinstance(date, datetime.date):
             raise TypeError("Date must be a datetime.date type")
         self.id = device_id
@@ -37,8 +39,10 @@ class DeviceRegistry(Model):
         Device Registry is table with all the registered devices in the system.
 
         device_name:    Is the name of the device given by the user.
-        device_ip:      Is the local IP of the device where the system will connect to.
-        added_on:       Stores the date that the device was added to the registry.
+        device_ip:      Is the local IP of the device where the system will
+                        connect to.
+        added_on:       Stores the date that the device was added to the
+                        registry.
     """
 
     device_name = CharField()
@@ -54,7 +58,15 @@ class DeviceRegistry(Model):
     @classmethod
     def get_devices(cls) -> types.GeneratorType:
         for device in DeviceRegistry.select():
-            yield Device(device.device_name, device.device_ip, device.added_on, device.id)
+            yield Device(device.device_name, device.device_ip, device.added_on,
+                         device.id)
+
+    @classmethod
+    def get_device(cls, device_id):
+        device = DeviceRegistry.select().where(
+            DeviceRegistry.id == device_id).first()
+        return Device(device.device_name, device.device_ip, device.added_on,
+                      device.id)
 
     @classmethod
     def add_device(cls, name: str, ip: str) -> Device:

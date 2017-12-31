@@ -25,7 +25,12 @@ class Recruiter:
     def __init__(self):
         self.socket = None
 
-    def get_status(self) -> [Status]:
+    def get_device_status(self, device_id) -> Status:
+        # Get list of status and filter the for the device requested
+        return next(filter(lambda status: status.device.id == device_id,
+                           self.get_devices_status()))
+
+    def get_devices_status(self) -> [Status]:
         return self._get_data(SAX_STATUS_KEY, StatusParser)
 
     def get_configurations(self) -> [Configuration]:

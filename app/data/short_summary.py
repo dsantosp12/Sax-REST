@@ -43,6 +43,7 @@ class ShortSummaryParser(ParserBase):
         return self.summary
 
     def _get_data_ready(self, msg: str):
+        msg = msg[:-1]
         idx = msg.find("[,")
 
         if idx == -1:

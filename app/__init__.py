@@ -8,7 +8,7 @@ app = Flask(__name__)
 app.config.from_object(config)
 
 # Allow cross origin request to the UI client only
-cors = CORS(app, resources={r"/*": {"origins": config.GUI_CLIENT_NAME}})
+cors = CORS(app, resources={r"/*": {"origins": "*"}})
 
 db = SqliteDatabase(config.DATABASE_URI)
 
